@@ -7,13 +7,11 @@ mod web_client;
 
 use crate::board::*;
 use crate::board_index::*;
-use crate::web_client::{WebClient, WebGame};
+use crate::web_client::WebClient;
 
 use rand::seq::SliceRandom;
-use reqwest::Error;
 
 use std::{io, thread, time};
-use std::io::*;
 
 fn main() {
     let poll_wait_time = time::Duration::from_millis(1500);
