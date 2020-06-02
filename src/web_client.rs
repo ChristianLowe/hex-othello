@@ -31,9 +31,9 @@ impl WebClient {
         Result::Ok(web_game)
     }
 
-    pub fn submit_move(&self, web_game: &WebGame, next_move: String) -> Result<reqwest::blocking::Response, reqwest::Error> {
+    pub fn submit_move(&self, web_game: &WebGame, next_move: &String) -> Result<reqwest::blocking::Response, reqwest::Error> {
         let move_number = web_game.moves.len();
         let request_url = format!("https://demo.mattmerr.com/api/games/{}/moves/{}", self.id, move_number);
-        self.client.post(request_url.as_str()).json(&next_move).send()
+        self.client.post(request_url.as_str()).json(next_move).send()
     }
 }
