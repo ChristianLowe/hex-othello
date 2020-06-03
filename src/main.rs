@@ -3,13 +3,12 @@ mod board;
 mod board_index;
 mod direction;
 mod pieces;
-mod web_client;
 
 use crate::board::*;
 use crate::board_index::*;
-use crate::web_client::WebClient;
 
 use rand::seq::SliceRandom;
+use board_em_api::WebClient;
 
 use std::{io, thread, time};
 
@@ -24,9 +23,9 @@ fn main() {
 
     let computer_player = Player::Black;
 
-    let web_client = WebClient::from(game_id);
+    let web_client = WebClient::from_hostname(String::from("demo.mattmerr.com"));
     loop {
-        let web_game = web_client.get_latest_web_game();
+        let web_game = web_client.get_latest_web_game(&game_id);
         if web_game.is_err() {
             let err = web_game.unwrap_err();
             println!("Error making web call: {}", err);

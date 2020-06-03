@@ -19,6 +19,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf1de2fe8c75bc145a2f577add951f8134889b4795d47466a54a5c846d691693"
 
 [[package]]
+name = "board-em-api"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5660295e78f36c29aa12168de062106f85ac6452aaeb7036c7bd3e588396327c"
+dependencies = [
+ "reqwest",
+ "serde",
+]
+
+[[package]]
 name = "bumpalo"
 version = "3.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -480,9 +490,8 @@ dependencies = [
 name = "othello"
 version = "0.1.0"
 dependencies = [
+ "board-em-api",
  "rand",
- "reqwest",
- "serde",
 ]
 
 [[package]]
