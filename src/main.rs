@@ -1,41 +1,30 @@
 
 mod board;
 mod board_index;
+mod config;
+mod connector;
 mod direction;
 mod pieces;
+mod strategy;
 
 use crate::board::*;
 use crate::board_index::*;
+use crate::config::Config;
+use crate::connector::ConnectorFactory;
 
 use rand::seq::SliceRandom;
-use board_em_api::WebClient;
-
-use std::{io, thread, time};
 
 fn main() {
-    let poll_wait_time = time::Duration::from_millis(1500);
-
-    let mut game_id = String::from("");
-    if game_id.is_empty() {
-        println!("Enter game id: ");
-        io::stdin().read_line(&mut game_id).unwrap();
-    }
+    let config = Config::from("config.toml");
+    println!("Config: {:?}", config);
 
     let computer_player = Player::Black;
+    let mut connector = ConnectorFactory::from(&config);
 
-    let web_client = WebClient::from_hostname(String::from("demo.mattmerr.com"));
     loop {
-        let web_game = web_client.get_latest_web_game(&game_id);
-        if web_game.is_err() {
-            let err = web_game.unwrap_err();
-            println!("Error making web call: {}", err);
-            thread::sleep(poll_wait_time);
-            continue;
-        }
-
-        let web_game = web_game.unwrap();
-        let board = Board::from_move_list(&web_game.moves);
-        let current_player = if web_game.moves.len() % 2 == 0 { Player::White } else { Player::Black };
+        let next_move_list = connector.get_next_move_list();
+        let board = Board::from_move_list(&next_move_list);
+        let current_player = if next_move_list.len() % 2 == 0 { Player::White } else { Player::Black };
 
         let moves = board.generate_moves(current_player);
         if moves.is_empty() {
@@ -60,12 +49,7 @@ fn main() {
 
             println!("Chose move {} from options {}", next_move, moves);
             println!("Board: {}", board);
-            let response = web_client.submit_move(&web_game, &next_move);
-            println!("Response: {:?}", response);
-        } else {
-            println!("Not my turn :(");
+            connector.submit_move(&next_move);
         }
-
-        thread::sleep(poll_wait_time);
     }
 }

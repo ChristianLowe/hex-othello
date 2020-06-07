@@ -1,0 +1,12 @@
+
+[run_params]
+connector="board_em"
+strategy="random"
+
+[connector.board_em]
+hostname="demo.mattmerr.com"
+game_id="a267cea3-aa11-43ae-87c3-55a347ffeeb5"
+poll_rate=1500
+
+[strategy.random]
+seed="12345"
