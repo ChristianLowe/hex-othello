@@ -13,6 +13,7 @@ use crate::config::Config;
 use crate::connector::ConnectorFactory;
 
 use rand::seq::SliceRandom;
+use crate::strategy::StrategyFactory;
 
 fn main() {
     let config = Config::from("config.toml");
@@ -20,6 +21,7 @@ fn main() {
 
     let computer_player = Player::Black;
     let mut connector = ConnectorFactory::from(&config);
+    let strategy = StrategyFactory::from(&config);
 
     loop {
         let next_move_list = connector.get_next_move_list();
@@ -43,8 +45,8 @@ fn main() {
                 String::from("PASS")
             } else {
                 let board_indexes = moves.board_indexes();
-                let random_move = board_indexes.choose(&mut rand::thread_rng()).unwrap();
-                BoardIndex::index_to_piece_name(*random_move)
+                let next_move = strategy.choose_move(board, board_indexes);
+                BoardIndex::index_to_piece_name(next_move)
             };
 
             println!("Chose move {} from options {}", next_move, moves);
