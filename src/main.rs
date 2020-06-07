@@ -11,8 +11,6 @@ use crate::board::*;
 use crate::board_index::*;
 use crate::config::Config;
 use crate::connector::ConnectorFactory;
-
-use rand::seq::SliceRandom;
 use crate::strategy::StrategyFactory;
 
 fn main() {
