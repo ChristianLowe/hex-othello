@@ -1,4 +1,4 @@
-use crate::config::{BoardEmConfig};
+use crate::config::Config;
 use crate::connector::Connector;
 use std::time::Duration;
 use std::{thread, io};
@@ -13,15 +13,6 @@ pub struct BoardEm {
 }
 
 impl BoardEm {
-    pub fn from(config: BoardEmConfig) -> BoardEm {
-        BoardEm {
-            web_client: WebClient::from_hostname(config.hostname),
-            game_id: config.game_id,
-            poll_duration: Duration::from_millis(config.poll_rate),
-            move_list: Vec::new()
-        }
-    }
-
     fn get_latest_web_game(&self) -> WebGame {
         print!("Getting latest web game... ");
         io::stdout().flush().unwrap();
@@ -41,6 +32,16 @@ impl BoardEm {
 }
 
 impl Connector for BoardEm {
+    fn from_config(config: Config) -> Self where Self: Sized {
+        let config = config.connector.board_em;
+        BoardEm {
+            web_client: WebClient::from_hostname(config.hostname),
+            game_id: config.game_id,
+            poll_duration: Duration::from_millis(config.poll_rate),
+            move_list: Vec::new()
+        }
+    }
+
     fn get_next_move_list(&mut self) -> Vec<String> {
         loop {
             let web_game = self.get_latest_web_game();

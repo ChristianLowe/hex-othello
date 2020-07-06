@@ -15,11 +15,13 @@ pub struct Config {
 pub struct RunConfig {
     pub connector: String,
     pub strategy: String,
+    pub ai_color: String,
 }
 
 #[derive(Clone, Deserialize, Debug)]
 pub struct ConnectorConfig {
     pub board_em: BoardEmConfig,
+    pub ipc: IpcConfig,
 }
 
 #[derive(Clone, Deserialize, Debug)]
@@ -27,6 +29,11 @@ pub struct BoardEmConfig {
     pub hostname: String,
     pub game_id: String,
     pub poll_rate: u64,
+}
+
+#[derive(Clone, Deserialize, Debug)]
+pub struct IpcConfig {
+    pub game_id: String
 }
 
 #[derive(Clone, Deserialize, Debug)]

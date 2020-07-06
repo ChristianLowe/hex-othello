@@ -13,7 +13,15 @@ pub enum Player {
 }
 
 impl Player {
-    pub(crate) fn opposite(&self) -> Player {
+    pub fn from_string(s: &String) -> Player {
+        match s.to_ascii_lowercase().as_str() {
+            "white" => Player::White,
+            "black" => Player::Black,
+            _ => panic!("Invalid ai color option (must be white or black)")
+        }
+    }
+
+    pub fn opposite(&self) -> Player {
         match self {
             Player::White => Player::Black,
             Player::Black => Player::White,

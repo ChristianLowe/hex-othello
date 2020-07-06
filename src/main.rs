@@ -17,7 +17,7 @@ fn main() {
     let config = Config::from("config.toml");
     println!("Config: {:?}", config);
 
-    let computer_player = Player::Black;
+    let computer_player = Player::from_string(&config.run_params.ai_color);
     let mut connector = ConnectorFactory::from(&config);
     let strategy = StrategyFactory::from(&config);
 
