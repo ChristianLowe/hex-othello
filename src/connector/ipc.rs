@@ -62,12 +62,11 @@ impl Connector for Ipc {
         let mem = self.shmem.as_ptr();
         unsafe {
             let count = *mem.offset(0) + 1;
-            *mem.offset(0) = count;
-
             let bytes = new_move.as_bytes();
             let idx = (count * 2) as isize;
             *mem.offset(idx) = bytes[0];
             *mem.offset(idx+1) = bytes[1];
+            *mem.offset(0) = count;
         }
     }
 }
